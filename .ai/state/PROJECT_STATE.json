@@ -19,21 +19,21 @@
   },
   "workflow": {
     "current_stage": "research",
-    "current_step": 1,
+    "current_step": 2,
     "stages_completed": ["initialization"],
     "stages_remaining": ["refactor", "implementation", "validation", "deployment"],
-    "paused": false,
-    "pause_reason": null
+    "paused": true,
+    "pause_reason": "Awaiting human decision on frontend framework (escalation esc_frontend_framework_20260128_153000)"
   },
   "agents": {
-    "next_agent": "research_agent",
-    "last_active": "orchestrator",
-    "agents_deployed": ["orchestrator"],
-    "waiting_for": null
+    "next_agent": "human",
+    "last_active": "research_agent",
+    "agents_deployed": ["orchestrator", "research_agent"],
+    "waiting_for": "Frontend framework selection decision"
   },
   "escalations": {
-    "pending_count": 0,
-    "pending_ids": [],
+    "pending_count": 1,
+    "pending_ids": ["esc_frontend_framework_20260128_153000"],
     "resolved_count": 1,
     "last_resolved": "esc_mission_definition_20260128_084000"
   },
