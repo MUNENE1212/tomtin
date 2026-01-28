@@ -1,0 +1,59 @@
+{
+  "escalation_id": "esc_frontend_framework_20260128_153000",
+  "title": "Frontend Framework Selection Decision Required",
+  "priority": "HIGH",
+  "blocking": true,
+  "created_at": "2026-01-28T15:30:00Z",
+  "created_by": "research_agent",
+  "status": "resolved",
+
+  "research_report": "/media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_frontend_framework_20260128.md",
+
+  "question": "Which frontend framework (React vs Vue.js vs Svelte) should we use for the mobile-first PWA ERP system?",
+
+  "context": {
+    "project_phase": "research",
+    "timeline": "3 months to MVP (2026-04-28)",
+    "primary_user": "Business owner on mobile phone (90% of operations)",
+    "critical_requirements": [
+      "Load in < 3 seconds on 4G",
+      "Record sale in < 30 seconds on mobile",
+      "Work offline for critical functions",
+      "Touch-optimized for 320px-428px screens",
+      "3-month MVP timeline"
+    ],
+    "backend": "Django 5.0+ with DRF APIs",
+    "team": "Django developers (JavaScript learning curve consideration)"
+  },
+
+  "human_response": {
+    "decided_at": "2026-01-28T15:45:00Z",
+    "decided_by": "Business Owner",
+    "choice": "React 18",
+    "reasoning": "Owner selected React despite Vue.js recommendation. Factors may include: larger ecosystem, more available libraries, team familiarity, or long-term considerations.",
+    "accepts_tradeoffs": true,
+    "accepted_tradeoffs": [
+      "Larger bundle size (165-200KB) requires optimization work",
+      "Steeper learning curve for Django developers (2-3 weeks)",
+      "Tighter timeline (3 months achievable but no buffer)",
+      "More configuration choices and boilerplate"
+    ],
+    "mitigation_plan": [
+      "Use code splitting and lazy loading to optimize bundle",
+      "Schedule 2-3 weeks training for Django developers",
+      "Use simpler state management (Zustand) instead of Redux",
+      "Leverage Vite for fast development builds",
+      "Use Material-UI for pre-built mobile components"
+    ]
+  },
+
+  "resolved_at": "2026-01-28T15:45:00Z",
+  "resolution_notes": "Business owner chose React 18 over recommended Vue.js 3. Decision locked. Will need bundle optimization strategy and developer training plan.",
+  "next_steps": [
+    "Update DECISIONS.md with DEC-P01: Frontend Framework = React 18",
+    "Update ARCHITECTURE.md with React-specific architecture",
+    "Plan bundle optimization strategy (code splitting, lazy loading)",
+    "Research React-specific mobile UI library (Material-UI, Chakra UI)",
+    "Create developer training plan for React"
+  ]
+}

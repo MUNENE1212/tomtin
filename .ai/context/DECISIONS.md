@@ -275,19 +275,74 @@ Business owner operates businesses while serving customers:
 
 ---
 
+### DEC-P01: Frontend Framework Selection - React 18
+
+**Decision ID:** DEC-P01
+**Date:** 2026-01-28
+**Decision:** React 18 selected as frontend framework for mobile-first PWA
+**Made By:** Business Owner (via escalation esc_frontend_framework_20260128_153000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_frontend_framework_20260128_153000
+
+**Decision Summary:**
+- Framework: React 18 with hooks
+- Bundle Size: 165-200KB (minified + gzipped)
+- Build Tool: Vite 5.0+ (for fast development)
+- State Management: TBD (Zustand or Redux recommended)
+- Routing: React Router v6
+
+**Rationale:**
+Business owner selected React 18 despite research recommendation of Vue.js 3. Key factors:
+- Largest ecosystem of UI libraries and integrations
+- Extensive community support and documentation
+- Strong long-term viability (Meta backing)
+- More developers familiar with React globally
+
+**Accepted Tradeoffs:**
+- Larger bundle size (165-200KB vs Vue.js 45-60KB) requires optimization
+- Steeper learning curve for Django developers (2-3 weeks vs 1-2 weeks)
+- Tighter 3-month timeline (no buffer, requires aggressive optimization)
+- More configuration decisions and boilerplate code
+
+**Impact:**
+- **Technical:** Must implement bundle optimization (code splitting, lazy loading, tree shaking)
+- **Timeline:** 2-3 weeks needed for React training for Django developers
+- **Performance:** Requires optimization to achieve < 3 second 4G load target
+- **Cost:** May need additional development time for optimization work
+
+**Mitigation Strategy:**
+1. Use Vite for fast development and optimized production builds
+2. Implement aggressive code splitting (route-based, component-based)
+3. Use lazy loading for heavy components (charts, data grids)
+4. Consider simpler state management (Zustand) to reduce learning curve
+5. Schedule 2-3 weeks developer training in Sprint 1
+6. Prototype critical mobile flows early to validate performance
+
+**Alternatives Considered:**
+- **Vue.js 3 (Research Recommendation):** Smaller bundle (45-60KB), easier learning curve, safer timeline - REJECTED by owner
+- **Svelte 5:** Smallest bundle (15-25KB), best performance - REJECTED due to immature ecosystem
+
+**Locked:** YES - Frontend framework is foundational; changing would require significant rework
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_frontend_framework_20260128.md
+- /media/munen/muneneENT/ementech-portfolio/tomtin/.ai/escalations/resolved/esc_frontend_framework_20260128_153000.json
+
+**Next Steps:**
+1. Research React-specific mobile UI library (Material-UI, Chakra UI, Ant Design Mobile)
+2. Define bundle optimization strategy
+3. Create React training plan for Django developers
+4. Set up React + Vite development environment
+
+---
+
 ## PENDING DECISIONS (To be Made in Research Stage)
 
-### DEC-P01: Frontend Framework Selection
-**Status:** PENDING RESEARCH
-**Options:** React, Vue.js, Svelte
-**Decision Maker:** Research Agent → Human Approval
-**Criteria:** PWA support, mobile performance, bundle size, ecosystem
-
 ### DEC-P02: Mobile UI Component Library
-**Status:** PENDING RESEARCH
-**Options:** Material-UI, Chakra UI, Tailwind + Custom, Vuetify
+**Status:** PENDING RESEARCH - NOW REACT-SPECIFIC
+**Options:** Material-UI, Chakra UI, Ant Design Mobile, React Native Paper
 **Decision Maker:** Research Agent → Human Approval
-**Criteria:** Touch optimization, mobile-first patterns, performance
+**Criteria:** Touch optimization, mobile-first patterns, bundle size impact
 
 ### DEC-P03: Offline Data Storage Strategy
 **Status:** PENDING RESEARCH
@@ -361,6 +416,7 @@ Request: Approval to switch to Vue.js
 | DEC-005 | 2026-01-28 | Double-Entry Financial System | Business Owner | APPROVED | YES |
 | DEC-006 | 2026-01-28 | M-Pesa Integration | Business Owner | APPROVED | YES |
 | DEC-007 | 2026-01-28 | Budget and Timeline Constraints | Business Owner | APPROVED | YES |
+| DEC-P01 | 2026-01-28 | Frontend Framework - React 18 | Business Owner | APPROVED | YES |
 
 ---
 
