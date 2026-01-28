@@ -1,0 +1,391 @@
+{
+  "workflow_name": "research_stage",
+  "stage": "research",
+  "description": "Research and investigate technical options to make informed architectural decisions",
+  "created_at": "2026-01-28T09:00:00Z",
+  "steps": [
+    {
+      "step_number": 1,
+      "name": "Frontend Framework Investigation",
+      "agent": "research_agent",
+      "description": "Research React vs Vue.js vs Svelte for mobile-first PWA development",
+      "tasks": [
+        "Compare PWA support maturity for each framework",
+        "Analyze bundle size impact on 3G/4G mobile performance",
+        "Evaluate ecosystem for mobile UI component libraries",
+        "Assess offline capability implementation complexity",
+        "Review community support and documentation quality",
+        "Test mobile rendering performance on low-end devices"
+      ],
+      "deliverables": [
+        "Framework comparison matrix",
+        "Bundle size analysis report",
+        "Mobile performance benchmarks",
+        "Recommendation with rationale"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 2,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 2,
+      "name": "Mobile UI Component Library Research",
+      "agent": "research_agent",
+      "description": "Investigate Material-UI, Chakra UI, Tailwind + Custom, Vuetify for mobile-first development",
+      "tasks": [
+        "Evaluate touch optimization quality (44px minimum)",
+        "Assess mobile-first design pattern support",
+        "Test performance on low-end mobile devices",
+        "Verify PWA compatibility",
+        "Analyze bundle size impact",
+        "Check responsive breakpoint systems",
+        "Review component library completeness"
+      ],
+      "deliverables": [
+        "Component library comparison matrix",
+        "Mobile touch optimization analysis",
+        "Bundle size impact report",
+        "PWA compatibility assessment",
+        "Recommendation with rationale"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 3,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 3,
+      "name": "Offline Storage Strategy Research",
+      "agent": "research_agent",
+      "description": "Investigate IndexedDB, LocalStorage, Dexie.js, PouchDB for offline PWA data storage",
+      "tasks": [
+        "Compare storage capacity limits across browsers",
+        "Evaluate sync conflict resolution strategies",
+        "Assess data query capabilities",
+        "Test mobile browser support (iOS Safari, Chrome Android)",
+        "Analyze transaction safety for offline financial records",
+        "Review ease of implementation and debugging",
+        "Consider data migration requirements"
+      ],
+      "deliverables": [
+        "Storage solution comparison matrix",
+        "Sync strategy design proposal",
+        "Mobile browser compatibility report",
+        "Risk assessment for financial data offline",
+        "Recommendation with implementation approach"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 4,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 4,
+      "name": "Task Queue System Research",
+      "agent": "research_agent",
+      "description": "Research Celery + Redis, Django-RQ, Dramatiq for background job processing",
+      "tasks": [
+        "Evaluate integration complexity with Django 5.0+",
+        "Assess M-Pesa callback handling capabilities",
+        "Compare background report generation performance",
+        "Analyze monitoring and debugging tools",
+        "Review resource consumption (memory, CPU)",
+        "Consider ease of deployment with Docker",
+        "Assess reliability and fault tolerance"
+      ],
+      "deliverables": [
+        "Task queue comparison matrix",
+        "Django integration analysis",
+        "Resource consumption report",
+        "Deployment complexity assessment",
+        "Recommendation with architecture diagram"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 5,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 5,
+      "name": "Chart/Visualization Library Research",
+      "agent": "research_agent",
+      "description": "Investigate Chart.js, Recharts, Victory, ApexCharts for mobile BI dashboards",
+      "tasks": [
+        "Test mobile rendering performance (320px-428px width)",
+        "Evaluate touch interaction support (zoom, pan, tap)",
+        "Analyze bundle size impact on PWA",
+        "Assess offline capability for cached charts",
+        "Review available chart types (line, bar, pie)",
+        "Test chart responsiveness on different screen sizes",
+        "Evaluate customization capabilities"
+      ],
+      "deliverables": [
+        "Chart library comparison matrix",
+        "Mobile rendering performance benchmarks",
+        "Bundle size impact report",
+        "Touch interaction assessment",
+        "Recommendation with examples"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 6,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 6,
+      "name": "Caching Strategy Research",
+      "agent": "research_agent",
+      "description": "Research Redis, Memcached, Django database cache for mobile API optimization",
+      "tasks": [
+        "Evaluate mobile API response optimization potential",
+        "Assess session storage for mobile users",
+        "Compare real-time dashboard caching strategies",
+        "Analyze cost implications for VPS deployment",
+        "Review integration with Django cache framework",
+        "Consider cache invalidation strategies",
+        "Assess memory requirements"
+      ],
+      "deliverables": [
+        "Caching solution comparison matrix",
+        "Mobile API optimization plan",
+        "Cost analysis for VPS deployment",
+        "Cache invalidation strategy proposal",
+        "Recommendation with implementation approach"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 7,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "1-2 hours"
+    },
+    {
+      "step_number": 7,
+      "name": "API Authentication Strategy Research",
+      "agent": "research_agent",
+      "description": "Research JWT, DRF Token Auth, Session Auth, OAuth2 for mobile PWA authentication",
+      "tasks": [
+        "Evaluate mobile app security best practices",
+        "Assess 2-hour session timeout handling",
+        "Research PIN-based quick login feasibility",
+        "Compare token refresh strategies",
+        "Evaluate secure token storage (httpOnly cookies)",
+        "Review CSRF protection for mobile",
+        "Consider biometric authentication integration (future)"
+      ],
+      "deliverables": [
+        "Authentication method comparison matrix",
+        "Mobile security analysis",
+        "PIN-based login feasibility assessment",
+        "Token storage strategy",
+        "Recommendation with security architecture"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 8,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 8,
+      "name": "Real-time Updates Research",
+      "agent": "research_agent",
+      "description": "Research WebSockets (Django Channels), Server-Sent Events, Polling for live updates",
+      "tasks": [
+        "Evaluate multi-user conflict prevention needs",
+        "Assess live dashboard update requirements",
+        "Compare M-Pesa payment notification approaches",
+        "Analyze mobile battery impact for each method",
+        "Review implementation complexity",
+        "Consider VPS resource consumption",
+        "Assess connection reliability on unstable networks"
+      ],
+      "deliverables": [
+        "Real-time update method comparison",
+        "Mobile battery impact analysis",
+        "Resource consumption report",
+        "Reliability assessment for poor networks",
+        "Recommendation (including 'no real-time' option)"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 9,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "1-2 hours"
+    },
+    {
+      "step_number": 9,
+      "name": "Testing Framework Research",
+      "agent": "research_agent",
+      "description": "Research Pytest, unittest, nose2 with mobile E2E testing tools",
+      "tasks": [
+        "Compare Django testing integration",
+        "Evaluate mobile E2E testing (BrowserStack, local devices)",
+        "Assess API testing framework options",
+        "Review financial calculation testing approaches",
+        "Analyze test reporting and coverage tools",
+        "Consider CI/CD integration",
+        "Evaluate mobile-specific testing challenges"
+      ],
+      "deliverables": [
+        "Testing framework comparison matrix",
+        "Mobile E2E testing strategy",
+        "Financial testing approach",
+        "CI/CD integration recommendations",
+        "Test coverage requirements (80%+)"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 10,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "2-3 hours"
+    },
+    {
+      "step_number": 10,
+      "name": "M-Pesa Integration Research",
+      "agent": "research_agent",
+      "description": "Deep dive into Safaricom Daraja API for STK Push and C2B integration",
+      "tasks": [
+        "Study Daraja API documentation (STK Push, C2B)",
+        "Research best practices for payment callbacks",
+        "Analyze duplicate transaction detection strategies",
+        "Evaluate sandbox testing approach",
+        "Review error handling and retry logic",
+        "Assess security requirements (API key encryption)",
+        "Research multiple till number management",
+        "Find Python libraries/django packages for M-Pesa"
+      ],
+      "deliverables": [
+        "M-Pesa API integration guide",
+        "Callback handling architecture",
+        "Duplicate detection strategy",
+        "Sandbox testing plan",
+        "Security implementation guide",
+        "Python library recommendations"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 11,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "3-4 hours"
+    },
+    {
+      "step_number": 11,
+      "name": "PWA Service Worker Architecture Research",
+      "agent": "research_agent",
+      "description": "Research PWA service worker patterns for offline-first mobile app",
+      "tasks": [
+        "Study service worker lifecycle and caching strategies",
+        "Research offline transaction queue patterns",
+        "Evaluate background sync API support",
+        "Assess app installation and update strategies",
+        "Review mobile browser compatibility (iOS Safari limitations)",
+        "Research push notification capabilities",
+        "Analyze service worker debugging tools"
+      ],
+      "deliverables": [
+        "Service worker architecture design",
+        "Caching strategy for assets and API data",
+        "Offline transaction sync flow",
+        "Mobile compatibility report (iOS vs Android)",
+        "Push notification implementation guide"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 12,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "3-4 hours"
+    },
+    {
+      "step_number": 12,
+      "name": "Database Schema Research for Multi-Business",
+      "agent": "research_agent",
+      "description": "Research Django multi-tenancy patterns for 3 independent businesses",
+      "tasks": [
+        "Evaluate Django-tenant-schemas vs Django-multitenant vs row-level security",
+        "Assess shared ledger vs separate ledger approaches",
+        "Research data isolation strategies",
+        "Analyze query performance implications",
+        "Review migration complexity for multi-tenant schema",
+        "Consider adding businesses without code changes",
+        "Evaluate reporting implications (consolidated vs per-business)"
+      ],
+      "deliverables": [
+        "Multi-tenancy approach comparison",
+        "Database schema design proposal",
+        "Data isolation strategy",
+        "Migration approach",
+        "Performance optimization recommendations",
+        "Reporting architecture design"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": 13,
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "3-4 hours"
+    },
+    {
+      "step_number": 13,
+      "name": "Compile Research Findings and Recommendations",
+      "agent": "research_agent",
+      "description": "Synthesize all research into comprehensive technical recommendations document",
+      "tasks": [
+        "Compile all research findings into single document",
+        "Create decision matrix for each technical choice",
+        "Develop phased implementation plan aligned with 3-month MVP",
+        "Identify risks and mitigation strategies",
+        "Create cost breakdown for approved choices",
+        "Update ARCHITECTURE.md with final decisions",
+        "Update DECISIONS.md with all approved technical choices",
+        "Create research summary presentation for human review"
+      ],
+      "deliverables": [
+        "Comprehensive Research Report (docs/research-report.md)",
+        "Updated ARCHITECTURE.md (all pending decisions resolved)",
+        "Updated DECISIONS.md (DEC-P01 through DEC-P10 approved)",
+        "Technical Architecture Diagrams",
+        "Phased Implementation Plan",
+        "Risk Register",
+        "Cost Analysis"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": "checkpoint",
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "4-5 hours"
+    },
+    {
+      "step_number": 14,
+      "name": "Create Research Stage Checkpoint",
+      "agent": "orchestrator",
+      "description": "Create checkpoint after research stage completion",
+      "tasks": [
+        "Verify all research deliverables are complete",
+        "Verify ARCHITECTURE.md updated with all decisions",
+        "Verify DECISIONS.md updated with approved choices",
+        "Create git commit for research stage",
+        "Create git tag for checkpoint",
+        "Update checkpoint index",
+        "Log checkpoint in AGENT_HISTORY.json"
+      ],
+      "deliverables": [
+        "Git checkpoint created",
+        "Checkpoint metadata logged",
+        "State files updated"
+      ],
+      "escalates_on_failure": false,
+      "next_step_if_success": "stage_complete",
+      "next_step_if_failure": "escalation",
+      "estimated_duration": "30 minutes"
+    }
+  ],
+  "stage_completion_criteria": {
+    "all_steps_complete": true,
+    "all_deliverables_created": true,
+    "architecture_decisions_made": true,
+    "no_pending_escalations": true,
+    "human_approval_received": false
+  },
+  "next_stage": "refactor",
+  "stage_estimated_duration": "30-40 hours",
+  "critical_success_factors": [
+    "All technical decisions backed by research evidence",
+    "Mobile-first PWA approach validated",
+    "Cost implications documented for each choice",
+    "Implementation complexity assessed",
+    "Risks identified with mitigation strategies",
+    "3-month MVP timeline feasibility confirmed"
+  ]
+}

@@ -4,7 +4,7 @@
     "description": "Multi-business ERP system integrating POS, Inventory, Accounting, and BI for 3 businesses (Water Packaging, Laundry, Retail/LPG)",
     "created": "2026-01-28T08:40:00Z",
     "version": "0.1.0",
-    "phase": "initialization",
+    "phase": "research",
     "budget": {
       "total": "$15,000 USD",
       "operational": "$200/month",
@@ -13,25 +13,29 @@
     "timeline": {
       "mvp_target": "3 months",
       "target_completion": "2026-04-28"
-    }
+    },
+    "mission_approved": true,
+    "mission_approved_at": "2026-01-28T09:00:00Z"
   },
   "workflow": {
-    "current_stage": "initialization",
+    "current_stage": "research",
     "current_step": 1,
-    "stages_completed": [],
-    "stages_remaining": ["research", "refactor", "implementation", "validation", "deployment"],
-    "paused": true,
-    "pause_reason": "Awaiting mission definition from human - esc_mission_definition_20260128_084000"
+    "stages_completed": ["initialization"],
+    "stages_remaining": ["refactor", "implementation", "validation", "deployment"],
+    "paused": false,
+    "pause_reason": null
   },
   "agents": {
-    "next_agent": null,
+    "next_agent": "research_agent",
     "last_active": "orchestrator",
     "agents_deployed": ["orchestrator"],
-    "waiting_for": "human_decision"
+    "waiting_for": null
   },
   "escalations": {
-    "pending_count": 1,
-    "pending_ids": ["esc_mission_definition_20260128_084000"]
+    "pending_count": 0,
+    "pending_ids": [],
+    "resolved_count": 1,
+    "last_resolved": "esc_mission_definition_20260128_084000"
   },
   "checkpoint": {
     "current": "cp_20260128_085723",
@@ -43,7 +47,7 @@
     "backend": "Django 5.0+",
     "database": "PostgreSQL",
     "frontend": "PWA (mobile-first)",
-    "status": "proposed"
+    "status": "locked"
   },
   "business_context": {
     "owner_primary_device": "mobile_phone",
@@ -54,5 +58,13 @@
     ],
     "primary_user": "Business Owner",
     "deployment_target": "Mobile PWA"
+  },
+  "decisions": {
+    "mission_locked": true,
+    "tech_stack_locked": true,
+    "mobile_first_locked": true,
+    "double_entry_accounting_locked": true,
+    "m_pesa_integration_locked": true,
+    "budget_locked": true
   }
 }
