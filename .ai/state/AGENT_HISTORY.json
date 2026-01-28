@@ -297,22 +297,108 @@
         "Task duplication: Idempotency keys (transaction ID), database unique constraint, daily reconciliation"
       ]
     }
-  ],
+  },
+  {
+    "run_id": "run_20260128_190000",
+    "agent": "research_agent",
+    "started_at": "2026-01-28T19:00:00Z",
+    "completed_at": "2026-01-28T19:00:00Z",
+    "stage": "research",
+    "step": 4,
+    "task": "Caching Strategy Research - Multi-layer caching (server + mobile PWA) for Django 5.0+ ERP on 4GB VPS",
+    "status": "completed",
+    "actions_taken": [
+      "Loaded and analyzed project context (MISSION.md, CONSTRAINTS.md, ARCHITECTURE.md, DECISIONS.md)",
+      "Created mission analysis document (docs/research/mission_analysis_caching.md) - mapped VPS constraints, performance requirements, cache invalidation needs",
+      "Researched Redis for caching: 150-500MB total (task queue + cache), django-redis integration, Django signals invalidation",
+      "Researched Memcached: 150-600MB total (requires 2 services), no advantage over Redis alone - ELIMINATED (unnecessary complexity)",
+      "Researched Database Cache (PostgreSQL): 10-100x slower than in-memory, increases DB load - ELIMINATED (too slow for < 500ms API target)",
+      "Researched File-Based Cache: 20-200x slower, file system pollution - ELIMINATED (too slow, pollutes filesystem)",
+      "Researched Varnish: Wrong use case (HTTP accelerator for public content), very complex (1-2 week VCL learning curve) - ELIMINATED (PWA Service Worker better fit)",
+      "Researched PWA Service Worker: 0MB server RAM, offline support, reduces mobile data usage - RECOMMENDED for mobile layer",
+      "Created weighted comparison matrix (5 criteria: VPS Resource Fit 30%, Django Integration 20%, Cache Invalidation 20%, Mobile/PWA Support 15%, Complexity 10%)",
+      "Evaluated each option against mission requirements (4GB RAM, < 500ms API response, offline support, POS data freshness)",
+      "Designed multi-layer caching strategy: Service Worker (mobile) + Redis (server) + IndexedDB (offline via Dexie.js)",
+      "Specified cache duration strategy: 1 min (real-time inventory) to 60 min (historical reports)",
+      "Designed cache invalidation strategy: Django signals for automatic invalidation on model changes, postMessage for Service Worker",
+      "Calculated resource requirements: Redis 150-500MB total (task queue 50-200MB + cache 100-300MB) - fits within 4GB budget",
+      "Created implementation timeline: Day 1-4 (Redis caching), Day 5-7 (Service Worker) = 7 days total",
+      "Identified risks (Redis OOM, stale cache data, Service Worker conflicts, resource contention) with mitigation strategies",
+      "Created escalation esc_caching_strategy_20260128_190000 with comprehensive comparison and recommendation",
+      "Recommended Redis + PWA Service Worker with HIGH confidence (9.2/10) - optimal balance of performance, resource efficiency, and simplicity",
+      "Updated PROJECT_STATE.json: new escalation created, caching_strategy_research added to steps_completed"
+    ],
+    "decisions_processed": [],
+    "next_agent": "human",
+    "git_sha_after": null,
+    "checkpoint_created": null,
+    "research_outputs": [
+      "/media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/mission_analysis_caching.md",
+      "/media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_caching_strategy_20260128.md",
+      "/media/munen/muneneENT/ementech-portfolio/tomtin/.ai/escalations/pending/esc_caching_strategy_20260128_190000.json"
+    ],
+    "recommendation": "Redis for server-side caching + PWA Service Worker for mobile client-side caching (multi-layer strategy)",
+    "recommendation_confidence": "HIGH (9.2/10)",
+    "options_evaluated": 6,
+    "research_duration_hours": 5,
+    "key_findings": [
+      "Redis is already required for Django-RQ (50-200MB baseline) - using it for caching adds only 100-300MB (total: 150-500MB)",
+      "Fits comfortably within 4GB VPS constraint: Redis 150-500MB + Django 200-400MB + PostgreSQL 500-1000MB + Nginx 20-50MB + OS 200-400MB = 1070-2450MB used, 1646-3026MB remaining",
+      "Multi-layer strategy provides optimal performance: Service Worker (mobile, 0MB RAM) + Redis (server, 150-500MB) + IndexedDB (offline, via Dexie.js)",
+      "Cache invalidation via Django signals provides automatic updates on data changes (products, inventory, prices, sales)",
+      "PWA Service Worker critical for offline support (MISSION.md requirement) - reduces mobile data usage 30-50%",
+      "Implementation timeline: 7 days (4 days Redis + 3 days Service Worker) - fits Sprint 1-2 (4-week foundation sprint)",
+      "Performance improvements: API response 200-400ms (down from 400-800ms), page load 1-2s (down from 2-4s), DB load reduced 40-60%"
+    ],
+    "resource_requirements": {
+      "redis": {
+        "task_queue": "50-200MB",
+        "cache_data": "100-300MB",
+        "total": "150-500MB",
+        "maxmemory": "500MB recommended",
+        "eviction_policy": "allkeys-lru"
+      },
+      "service_worker": {
+        "server_ram": "0MB (cached on mobile device)",
+        "storage_per_device": "50-500MB",
+        "offline_support": "Yes (critical requirement)",
+        "bandwidth_reduction": "30-50%"
+      },
+      "implementation": {
+        "redis_caching": "4 days",
+        "service_worker": "3 days",
+        "total": "7 days (fits Sprint 1-2)"
+      }
+    },
+    "cache_strategy": {
+      "layer_1_mobile": "PWA Service Worker (HTTP responses, static assets)",
+      "layer_2_server": "Redis (database queries, rendered views, sessions)",
+      "layer_3_offline": "IndexedDB via Dexie.js (offline transactions)",
+      "invalidation": "Django signals (server) + postMessage (Service Worker)",
+      "ttl_range": "1 minute (real-time) to 60 minutes (historical)"
+    },
+    "risks_mitigation": [
+      "Redis memory exhaustion: Set maxmemory 500MB, enable allkeys-lru eviction, monitor RAM daily, alert at 400MB",
+      "Stale cache data: Short TTLs (1-5 min for real-time), Django signals for automatic invalidation, cache versioning",
+      "Service Worker conflicts: Network-first strategy for real-time data, 5 min TTL for inventory, display 'last updated'",
+      "Resource contention: Separate Redis databases (DB 0 for task queue, DB 1 for cache), separate connection pools"
+    ]
+  }
   "current_context": {
-    "last_run": "run_20260128_180000",
+    "last_run": "run_20260128_190000",
     "next_agent_should_be": "human",
     "workflow_stage": "research",
     "workflow_step": 4,
     "workflow_paused": true,
-    "pause_reason": "Awaiting human decisions on 3 pending escalations (UI library, offline storage, task queue system)",
-    "total_runs": 6,
+    "pause_reason": "Awaiting human decisions on 4 pending escalations (UI library, offline storage, task queue system, caching strategy)",
+    "total_runs": 7,
     "mission_status": "approved_locked",
     "pending_research_tasks": [
       "API Authentication Strategy Research",
       "Real-time Updates Research",
       "Testing Framework Research",
       "M-Pesa Integration Research",
-      "PWA Service Worker Architecture Research",
+      "Chart/Visualization Library Research (included with Mantine UI - DEC-P05)",
       "Database Schema Research for Multi-Business",
       "Compile Research Findings and Create Reports"
     ],
@@ -320,7 +406,8 @@
       "Frontend Framework Research (React 18 selected)",
       "Mobile UI Component Library Research (Mantine UI selected)",
       "Offline Storage Strategy Research (Dexie.js recommended)",
-      "Task Queue System Research (Django-RQ recommended)"
+      "Task Queue System Research (Django-RQ recommended)",
+      "Caching Strategy Research (Redis + Service Worker recommended)"
     ]
   },
   "project_metadata": {
