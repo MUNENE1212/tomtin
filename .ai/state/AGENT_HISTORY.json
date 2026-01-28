@@ -225,19 +225,89 @@
         "Raw IndexedDB: Excellent reliability but 3-4 week implementation (1-2 weeks longer than Dexie.js), complex callback-based API, error-prone"
       ],
       "storage_architecture": "Queue-and-replay pattern with IndexedDB (via Dexie.js): offline transactions stored locally with UUID IDs, sync to server when connection restores, atomic writes guarantee zero data loss, reactive queries for real-time UI updates"
+    },
+    {
+      "run_id": "run_20260128_180000",
+      "agent": "research_agent",
+      "started_at": "2026-01-28T18:00:00Z",
+      "completed_at": "2026-01-28T18:00:00Z",
+      "stage": "research",
+      "step": 4,
+      "task": "Task Queue System Research - Celery + Redis, Django-RQ, Dramatiq, Django Background Tasks, Huey for Django 5.0+ ERP on VPS",
+      "status": "completed",
+      "actions_taken": [
+        "Loaded and analyzed project context (MISSION.md, CONSTRAINTS.md, ARCHITECTURE.md, DECISIONS.md)",
+        "Created mission analysis document (docs/research/mission_analysis_task_queue.md) - mapped VPS constraints and task queue requirements",
+        "Researched Celery + Redis: 150-300MB per worker, Flower monitoring, excellent Django integration, but memory-heavy (550-1400MB total)",
+        "Researched Django-RQ: 50-100MB per worker, rq-dashboard monitoring, native Django package, lightweight (250-800MB total)",
+        "Researched Dramatiq: 40-80MB per worker (lightest), modern asyncio architecture, less Django integration (250-790MB total)",
+        "Researched Django Background Tasks: 80-120MB per worker, no Redis needed, database polling (less reliable, 320-600MB total)",
+        "Researched Huey: 40-70MB per worker, no built-in monitoring dashboard, requires custom monitoring (250-710MB total)",
+        "Created weighted comparison matrix (5 criteria: VPS Resource Fit 30%, Django Integration 20%, Monitoring 15%, Reliability 20%, Complexity 15%)",
+        "Evaluated each option against mission requirements (VPS 4GB RAM constraint, M-Pesa callback reliability, 1-week implementation timeline)",
+        "Calculated resource requirements: Django-RQ fits 1GB budget (250-800MB), Celery exceeds budget (550-1400MB)",
+        "Assessed risks: Memory exhaustion, worker crash loops, M-Pesa callback reliability, task duplication",
+        "Designed monitoring strategy: rq-dashboard + Django admin + Python logging",
+        "Created implementation timeline: Day 1 (setup), Day 2-3 (task definitions), Day 4 (monitoring/testing)",
+        "Created escalation esc_task_queue_20260128_180000 with comprehensive comparison and recommendation",
+        "Recommended Django-RQ with HIGH confidence (9.1/10) - optimal balance of resource efficiency, Django integration, simplicity, and reliability",
+        "Updated PROJECT_STATE.json: new escalation created, task_queue_system_research added to steps_completed"
+      ],
+      "decisions_processed": [],
+      "next_agent": "human",
+      "git_sha_after": null,
+      "checkpoint_created": null,
+      "research_outputs": [
+        "/media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/mission_analysis_task_queue.md",
+        "/media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_task_queue_20260128.md",
+        "/media/munen/muneneENT/ementech-portfolio/tomtin/.ai/escalations/pending/esc_task_queue_20260128_180000.json"
+      ],
+      "recommendation": "Django-RQ for Django 5.0+ ERP task queue system",
+      "recommendation_confidence": "HIGH",
+      "options_evaluated": 5,
+      "research_duration_hours": 5,
+      "key_findings": [
+        "Django-RQ provides optimal balance: 250-800MB memory (well within 1GB budget), native Django integration (Django admin + @job decorator), rq-dashboard monitoring, Redis persistence for M-Pesa callbacks, simple API (2-3 day learning curve), 4-day implementation",
+        "Celery too heavy: 550-1400MB total (risks exceeding 4GB VPS), 150-300MB per worker, steeper learning curve (1-2 weeks), 5.5-day implementation, overkill for MVP use cases",
+        "Dramatiq viable but less ideal: Excellent resource efficiency (250-790MB), but less mature Django integration, asyncio learning curve (3-5 days), less feature-rich monitoring",
+        "Django Background Tasks not recommended: Database polling less reliable than Redis (insufficient for M-Pesa financial callbacks), last release 2022 (inactive maintenance), no real-time monitoring",
+        "Huey viable but less ideal: Excellent resource efficiency (250-710MB), but no built-in dashboard (must build custom), less Django integration than django-rq"
+      ],
+      "resource_requirements": {
+        "django_rq": {
+          "worker_memory": "50-100MB per worker",
+          "workers_on_4gb_vps": "4-6 workers possible",
+          "total_memory": "250-800MB (within 1GB budget)",
+          "redis_memory": "50-200MB",
+          "implementation_time": "4 days"
+        },
+        "celery": {
+          "worker_memory": "150-300MB per worker",
+          "workers_on_4gb_vps": "2-3 workers max",
+          "total_memory": "550-1400MB (exceeds 1GB budget)",
+          "redis_memory": "100-500MB",
+          "implementation_time": "5.5 days"
+        }
+      },
+      "monitoring_strategy": "rq-dashboard (web UI) + Django admin integration + Python logging + daily manual checks (queue depth, failed jobs)",
+      "risk_mitigation": [
+        "M-Pesa callback reliability: Redis AOF persistence, high priority queue, idempotency keys, failed job queue, daily reconciliation",
+        "Memory exhaustion: Limit to 4 workers (200-400MB), RAM alert at 3.5GB/4GB, Redis maxmemory 200MB",
+        "Worker crash loop: systemd auto-restart, crash logging, queue depth monitoring, task timeout configuration",
+        "Task duplication: Idempotency keys (transaction ID), database unique constraint, daily reconciliation"
+      ]
     }
   ],
   "current_context": {
-    "last_run": "run_20260128_170000",
+    "last_run": "run_20260128_180000",
     "next_agent_should_be": "human",
     "workflow_stage": "research",
     "workflow_step": 4,
     "workflow_paused": true,
-    "pause_reason": "Awaiting human decision on offline storage strategy (escalation esc_offline_storage_20260128_170000)",
-    "total_runs": 5,
+    "pause_reason": "Awaiting human decisions on 3 pending escalations (UI library, offline storage, task queue system)",
+    "total_runs": 6,
     "mission_status": "approved_locked",
     "pending_research_tasks": [
-      "Task Queue System Research",
       "API Authentication Strategy Research",
       "Real-time Updates Research",
       "Testing Framework Research",
@@ -249,7 +319,8 @@
     "completed_research_tasks": [
       "Frontend Framework Research (React 18 selected)",
       "Mobile UI Component Library Research (Mantine UI selected)",
-      "Offline Storage Strategy Research (Dexie.js recommended)"
+      "Offline Storage Strategy Research (Dexie.js recommended)",
+      "Task Queue System Research (Django-RQ recommended)"
     ]
   },
   "project_metadata": {

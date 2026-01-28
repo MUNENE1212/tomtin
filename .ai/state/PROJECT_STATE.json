@@ -25,22 +25,23 @@
       "mission_definition_approval",
       "frontend_framework_research",
       "mobile_ui_library_research",
-      "offline_storage_research"
+      "offline_storage_research",
+      "task_queue_system_research"
     ],
     "stages_completed": ["initialization"],
     "stages_remaining": ["refactor", "implementation", "validation", "deployment"],
     "paused": true,
-    "pause_reason": "Awaiting human decision on offline storage strategy (escalation esc_offline_storage_20260128_170000)"
+    "pause_reason": "Awaiting human decisions on UI library (esc_ui_library_20260128_163000), offline storage (esc_offline_storage_20260128_170000), and task queue system (esc_task_queue_20260128_180000)"
   },
   "agents": {
     "next_agent": "human",
     "last_active": "research_agent",
     "agents_deployed": ["orchestrator", "research_agent"],
-    "current_task": "Awaiting human decision on offline storage strategy"
+    "current_task": "Awaiting human decisions on 3 pending escalations"
   },
   "escalations": {
-    "pending_count": 2,
-    "pending_ids": ["esc_ui_library_20260128_163000", "esc_offline_storage_20260128_170000"],
+    "pending_count": 3,
+    "pending_ids": ["esc_ui_library_20260128_163000", "esc_offline_storage_20260128_170000", "esc_task_queue_20260128_180000"],
     "resolved_count": 3,
     "last_resolved": "esc_frontend_framework_20260128_153000"
   },
