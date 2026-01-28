@@ -412,13 +412,95 @@ React 18 (DEC-P01)
 
 ---
 
-## PENDING DECISIONS (To be Made in Research Stage)
+---
 
-### DEC-P03: Offline Data Storage Strategy
-**Status:** PENDING RESEARCH
-**Options:** IndexedDB, LocalStorage, Dexie.js, PouchDB
-**Decision Maker:** Research Agent → Human Approval
-**Criteria:** Storage limits, sync complexity, mobile browser support
+### DEC-P03: Offline Data Storage Strategy - Dexie.js
+
+**Decision ID:** DEC-P03
+**Date:** 2026-01-28
+**Decision:** Dexie.js selected as offline storage layer for mobile PWA
+**Made By:** Business Owner (via escalation esc_offline_storage_20260128_170000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_offline_storage_20260128_170000
+
+**Decision Summary:**
+- Library: Dexie.js v3+ (modern wrapper around IndexedDB)
+- Bundle Size: 20KB minified + gzipped
+- Storage Capacity: ~500MB+ on mobile browsers
+- Integration: dexie-react-hooks for React 18
+- Pattern: Queue-and-replay sync (offline → online)
+
+**Rationale:**
+Business owner selected Dexie.js as the offline storage strategy. Key factors:
+- **Zero data loss guarantee** via IndexedDB transactional writes (atomic, all-or-nothing)
+- **Excellent React 18 integration** with official `dexie-react-hooks` package (`useLiveQuery()`)
+- **Fast implementation** - 2-3 weeks total, fits 3-month MVP timeline
+- **Tiny bundle** - 20KB adds minimal overhead (React 165KB + Mantine 200KB + Dexie 20KB = 385KB)
+- **Massive capacity** - ~500MB storage, handles 500+ transactions easily (~5-10MB)
+- **Proven technology** - 13K GitHub stars, 400K weekly NPM downloads
+- **Django developer friendly** - Promise-based API, TypeScript support, 3-5 day learning curve
+
+**Critical Requirements Met:**
+- ✅ Zero data loss for financial transactions (non-negotiable)
+- ✅ Survives browser crashes and device restarts
+- ✅ Works on iOS Safari and Android Chrome
+- ✅ Queue transactions offline, sync when online
+- ✅ User sees sync status (pending/synced/failed)
+
+**Impact:**
+- **Technical:** IndexedDB wrapper provides transactional reliability with simple API
+- **Timeline:** 2-3 weeks implementation (Week 1: learning/design, Week 2: core storage, Week 3: React integration)
+- **Bundle:** +20KB (385KB total - well under 5MB PWA budget)
+- **Data Integrity:** Atomic writes, crash recovery, duplicate detection via idempotency keys
+
+**Data Architecture:**
+1. **Offline ID Generation** - UUID v4 for unique transaction IDs
+2. **Atomic Transaction Writes** - All-or-nothing via IndexedDB transactions
+3. **Queue-and-Replay Sync** - Queue locally, auto-sync when connection restored
+4. **Crash Recovery** - Auto-verification and recovery on app restart
+5. **Duplicate Detection** - Idempotency keys prevent double submission
+6. **Sync Status Visibility** - Real-time UI updates (pending/synced/failed)
+7. **Retry Strategy** - Auto-retry on reconnect, exponential backoff
+
+**Storage Schema (Planned):**
+- `transactions` - Offline sales, expenses, deposits, withdrawals
+- `products` - Product catalog (cached from server)
+- `customers` - Customer data (cached from server)
+- `sync_queue` - Ordered queue of pending actions to sync
+- `sync_status` - Tracking sync state (last sync, pending count, failures)
+
+**Stack Integration:**
+```
+React 18 (DEC-P01)
+├── Mantine UI (DEC-P02)
+├── Dexie.js v3+ (@mantine/core independent)
+│   ├── dexie-react-hooks (useLiveQuery)
+│   └── IndexedDB (browser storage)
+└── Vite 5.0+ (build tool)
+```
+
+**Alternatives Considered:**
+- **Raw IndexedDB (8.35/10):** Same reliability but complex callback API, +1-2 weeks timeline, no React hooks - REJECTED
+- **LocalStorage (5.05/10):** Only 5-10MB capacity, not transactional (data loss risk), synchronous (blocks UI) - REJECTED
+- **PouchDB (7.85/10):** 140KB bundle, bi-directional sync overkill, steep learning curve - REJECTED
+- **RxDB (7.85/10):** 100-150KB bundle, reactive programming complexity - REJECTED
+
+**Locked:** YES - Offline storage is foundational for zero data loss requirement
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_offline_storage_20260128.md
+- /media/munen/muneneENT/ementech-portfolio/tomtin/.ai/escalations/resolved/esc_offline_storage_20260128_170000.json
+
+**Next Steps:**
+1. Design Dexie.js schema for all offline entities
+2. Document sync architecture and conflict resolution
+3. Plan React hooks for offline operations (useOfflineTransaction, etc.)
+4. Implement sync queue and retry logic
+5. Create sync status UI components
+
+---
+
+## PENDING DECISIONS (To be Made in Research Stage)
 
 ### DEC-P04: Task Queue System
 **Status:** PENDING RESEARCH
@@ -488,6 +570,8 @@ Request: Approval to switch to Vue.js
 | DEC-007 | 2026-01-28 | Budget and Timeline Constraints | Business Owner | APPROVED | YES |
 | DEC-P01 | 2026-01-28 | Frontend Framework - React 18 | Business Owner | APPROVED | YES |
 | DEC-P02 | 2026-01-28 | UI Component Library - Mantine UI | Business Owner | APPROVED | YES |
+| DEC-P03 | 2026-01-28 | Offline Storage - Dexie.js | Business Owner | APPROVED | YES |
+| DEC-P05 | 2026-01-28 | Chart Library - @mantine/charts | Mantine UI | APPROVED | YES |
 
 ---
 

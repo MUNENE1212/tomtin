@@ -1,0 +1,55 @@
+{
+  "escalation_id": "esc_offline_storage_20260128_170000",
+  "title": "Offline Data Storage Strategy Decision Required",
+  "priority": "HIGH",
+  "blocking": true,
+  "created_at": "2026-01-28T17:00:00Z",
+  "created_by": "research_agent",
+  "status": "resolved",
+
+  "research_report": "/media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_offline_storage_20260128.md",
+
+  "question": "Which offline storage strategy should we use for the mobile-first PWA ERP system?",
+
+  "context": {
+    "project_phase": "research",
+    "frontend_framework": "React 18 (DEC-P01)",
+    "ui_library": "Mantine UI (DEC-P02)",
+    "primary_user": "Business owner on mobile phone",
+    "critical_requirement": "ZERO DATA LOSS for financial transactions (non-negotiable)",
+    "use_case": "Record sales, expenses while customer waiting, even without internet",
+    "network_reality": "Intermittent 4G/WiFi connectivity",
+    "mobile_browsers": "iOS Safari, Android Chrome"
+  },
+
+  "human_response": {
+    "decided_at": "2026-01-28T17:15:00Z",
+    "decided_by": "Business Owner",
+    "choice": "Dexie.js",
+    "reasoning": "Owner selected Dexie.js for offline storage. Key factors: zero data loss guarantee via IndexedDB transactions, excellent React 18 integration with official hooks (dexie-react-hooks), fast 2-3 week implementation timeline fitting 3-month MVP, tiny 20KB bundle size, proven technology with 13K stars and 400K weekly downloads. Perfect for single-user offline queue-and-replay pattern.",
+    "accepts_tradeoffs": true,
+    "accepted_tradeoffs": [
+      "Additional 20KB bundle size (acceptable, total still only 385KB)",
+      "2-3 weeks for implementation (fits within 3-month MVP timeline)",
+      "Django developers need 3-5 days to learn Dexie API (reasonable)"
+    ],
+    "mitigation_plan": [
+      "Use dexie-react-hooks for seamless React 18 integration",
+      "Implement atomic transaction writes for data integrity",
+      "UUID v4 for offline transaction ID generation",
+      "Queue-and-replay sync pattern with retry logic",
+      "Sync status visibility in UI (pending/synced/failed)",
+      "Crash recovery verification on app restart"
+    ]
+  },
+
+  "resolved_at": "2026-01-28T17:15:00Z",
+  "resolution_notes": "Business owner chose Dexie.js as the offline storage strategy. Decision optimizes for: data reliability (zero loss via IndexedDB transactions), storage capacity (500MB+ for 500+ transactions), React 18 integration (official hooks), minimal timeline impact (2-3 weeks). Scored 9.65/10 - highest of all options evaluated. Raw IndexedDB was viable alternative but adds 1-2 weeks to timeline.",
+  "next_steps": [
+    "Update DECISIONS.md with DEC-P03: Offline Storage = Dexie.js",
+    "Document offline data architecture and sync strategy",
+    "Plan Dexie.js schema for transactions, products, customers",
+    "Design queue-and-replay sync mechanism",
+    "Proceed to next research: Task Queue System"
+  ]
+}
