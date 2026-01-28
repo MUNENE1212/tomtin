@@ -20,23 +20,24 @@
     "current_step": 1,
     "stages_completed": [],
     "stages_remaining": ["research", "refactor", "implementation", "validation", "deployment"],
-    "paused": false,
-    "pause_reason": null
+    "paused": true,
+    "pause_reason": "Awaiting mission definition from human - esc_mission_definition_20260128_084000"
   },
   "agents": {
-    "next_agent": "orchestrator",
-    "last_active": null,
-    "agents_deployed": []
+    "next_agent": null,
+    "last_active": "orchestrator",
+    "agents_deployed": ["orchestrator"],
+    "waiting_for": "human_decision"
   },
   "escalations": {
     "pending_count": 1,
     "pending_ids": ["esc_mission_definition_20260128_084000"]
   },
   "checkpoint": {
-    "current": null,
-    "git_sha": null,
-    "created": null,
-    "verified": false
+    "current": "cp_20260128_085723",
+    "git_sha": "e8abae80b3ad0824cbdb5d6d79586b5399eb84b7",
+    "created": "2026-01-28T08:57:23Z",
+    "verified": true
   },
   "technology_stack": {
     "backend": "Django 5.0+",
