@@ -19,27 +19,28 @@
   },
   "workflow": {
     "current_stage": "research",
-    "current_step": 3,
+    "current_step": 4,
     "steps_completed": [
       "initialization",
       "mission_definition_approval",
       "frontend_framework_research",
-      "mobile_ui_library_research"
+      "mobile_ui_library_research",
+      "offline_storage_research"
     ],
     "stages_completed": ["initialization"],
     "stages_remaining": ["refactor", "implementation", "validation", "deployment"],
     "paused": true,
-    "pause_reason": "Awaiting human decision on mobile UI component library (escalation esc_ui_library_20260128_163000)"
+    "pause_reason": "Awaiting human decision on offline storage strategy (escalation esc_offline_storage_20260128_170000)"
   },
   "agents": {
     "next_agent": "human",
     "last_active": "research_agent",
     "agents_deployed": ["orchestrator", "research_agent"],
-    "current_task": "Awaiting human decision on mobile UI component library"
+    "current_task": "Awaiting human decision on offline storage strategy"
   },
   "escalations": {
-    "pending_count": 1,
-    "pending_ids": ["esc_ui_library_20260128_163000"],
+    "pending_count": 2,
+    "pending_ids": ["esc_ui_library_20260128_163000", "esc_offline_storage_20260128_170000"],
     "resolved_count": 3,
     "last_resolved": "esc_frontend_framework_20260128_153000"
   },
