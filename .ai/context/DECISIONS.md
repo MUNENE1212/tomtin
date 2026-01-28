@@ -500,19 +500,286 @@ React 18 (DEC-P01)
 
 ---
 
-## PENDING DECISIONS (To be Made in Research Stage)
+### DEC-P04: Task Queue System - Django-RQ
 
-### DEC-P04: Task Queue System
-**Status:** PENDING RESEARCH
-**Options:** Celery + Redis, Django-RQ, Dramatiq
-**Decision Maker:** Research Agent → Human Approval
-**Criteria:** Integration complexity, performance, monitoring
+**Decision ID:** DEC-P04
+**Date:** 2026-01-28
+**Decision:** Django-RQ selected as task queue system for Django 5.0+ ERP
+**Made By:** Business Owner (via escalation esc_task_queue_20260128_180000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_task_queue_20260128_180000
 
-### DEC-P05: Chart/Visualization Library
-**Status:** ALREADY DECIDED (included with Mantine UI - DEC-P02)
-**Selection:** @mantine/charts (powered by Recharts)
-**Decision Maker:** Included with Mantine UI selection
-**Notes:** Mantine Charts provides mobile-optimized charts powered by Recharts. No additional library needed.
+**Decision Summary:**
+- Library: Django-RQ (RQ + Django integration)
+- Worker Memory: 50-100MB per worker (2-3x lighter than Celery)
+- Configuration: 4 workers, Redis backend
+- Monitoring: rq-dashboard (web-based)
+- Implementation: 4 days
+
+**Rationale:**
+Business owner approved Django-RQ for background task processing. Key factors:
+- **VPS Resource Fit** - 250-800MB total (vs 550-1400MB for Celery, risks exceeding 4GB limit)
+- **Django Integration** - Native Django package, django admin integration
+- **Simplicity** - 4-day implementation (vs 5.5 days for Celery)
+- **Learning Curve** - 2-3 days for Django developers (vs 1-2 weeks for Celery)
+- **Monitoring** - rq-dashboard provides real-time visibility
+
+**Use Cases:**
+- M-Pesa payment callback processing (high priority queue)
+- Email notifications (future Phase 2)
+- PDF/Excel report generation
+- Data sync jobs
+- Scheduled tasks (daily backups, end-of-day closing)
+
+**Impact:**
+- **Technical:** Redis required (already needed for caching and auth)
+- **Timeline:** 4-day implementation (fits Sprint 1-2)
+- **Resource:** 250-800MB RAM on 4GB VPS (acceptable)
+
+**Mitigation Strategy:**
+- Redis AOF persistence for task durability
+- High priority queue for M-Pesa callbacks (financial criticality)
+- Failed job queue for inspection and retry
+- rq-dashboard monitoring at http://vps:9181
+- Daily reconciliation for financial tasks
+
+**Locked:** YES - Task queue is foundational for background jobs
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_task_queue_20260128.md
+
+---
+
+### DEC-P06: Caching Strategy - Redis + PWA Service Worker
+
+**Decision ID:** DEC-P06
+**Date:** 2026-01-28
+**Decision:** Multi-layer caching with Redis (server) + PWA Service Worker (client)
+**Made By:** Business Owner (via escalation esc_caching_strategy_20260128_190000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_caching_strategy_20260128_190000
+
+**Decision Summary:**
+- Layer 1 (Server): Redis for API response caching
+- Layer 2 (Client): PWA Service Worker for mobile device caching
+- Redis Memory: 150-500MB total (50-200MB task queue + 100-300MB cache)
+- Implementation: 7 days (4 days Redis, 3 days Service Worker)
+
+**Rationale:**
+Business owner approved multi-layer caching strategy. Key factors:
+- **Performance** - 50% faster API responses (400ms → 200ms), 50% faster page loads (4s → 2s)
+- **Offline Support** - PWA Service Worker critical for MISSION.md requirement
+- **Zero Additional Cost** - Redis already required for Django-RQ
+- **VPS Resource Fit** - 150-500MB fits comfortably within 4GB budget
+- **Database Load Reduction** - 40-60% fewer database queries
+
+**Cache Strategy:**
+- **Server-Side (Redis):** Products, prices, customers (1-60 min TTL)
+- **Client-Side (Service Worker):** API responses, static assets (5 min to 24 hours)
+- **Invalidation:** Django signals for automatic cache updates
+
+**Impact:**
+- **Technical:** Multi-layer architecture requires coordination
+- **Timeline:** 7-day implementation (acceptable in Sprint 1-2)
+- **Performance:** Achieves <500ms API target, <3s page load target
+- **Offline:** PWA works without internet (critical requirement)
+
+**Mitigation Strategy:**
+- Django signals for automatic cache invalidation
+- Short TTLs for real-time data (1-5 min inventory, 60 min reports)
+- Service Worker postMessage for cache updates
+- Redis maxmemory 500MB with allkeys-lru eviction
+- Separate Redis DBs (DB 0 for RQ, DB 1 for cache)
+
+**Locked:** YES - Caching is critical for mobile performance targets
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_caching_strategy_20260128.md
+
+---
+
+### DEC-P07: API Authentication - JWT with Refresh Token Rotation
+
+**Decision ID:** DEC-P07
+**Date:** 2026-01-28
+**Decision:** JWT (JSON Web Tokens) using djangorestframework-simplejwt
+**Made By:** Business Owner (via escalation esc_auth_strategy_20260128_200000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_auth_strategy_20260128_200000
+
+**Decision Summary:**
+- Package: djangorestframework-simplejwt
+- Access Token: 15 minutes (stateless, stored in React memory)
+- Refresh Token: 7 days (one-time use, rotated on refresh)
+- Token Storage: IndexedDB via Dexie.js (DEC-P03)
+- Implementation: 10 days (5 days backend, 5 days frontend)
+
+**Rationale:**
+Business owner approved JWT authentication strategy. Key factors:
+- **Mobile Performance** - Stateless (100-200ms faster than DRF tokens, no database lookup)
+- **Offline Support** - Perfect Dexie.js integration (10/10 offline support)
+- **Security** - Financial-grade with short access tokens + refresh token rotation
+- **Token Size** - Small (~300 bytes) minimizes mobile data usage
+- **Maturity** - 3.2K GitHub stars, 800K weekly downloads, Django 5.0+ compatible
+
+**Token Architecture:**
+- Access Token (15 min): Used in `Authorization: Bearer <token>` header
+- Refresh Token (7 days): Stored in httpOnly cookie + IndexedDB fallback
+- Token Revocation: Redis blacklist (`blacklist:{token_jti}` with 7-day TTL)
+- PIN Authentication: Optional 4-6 digit PIN for quick login
+
+**Security Features:**
+- Short access tokens limit XSS damage (15 min expiry)
+- Refresh token rotation prevents replay attacks
+- Redis blacklist for immediate revocation (logout, device theft)
+- Rate limiting (5 login attempts/minute)
+- 2-hour inactivity timeout (mobile context)
+
+**Impact:**
+- **Technical:** Redis required (already needed for RQ + cache)
+- **Timeline:** 10-day implementation (fits Sprint 1-2)
+- **Security:** Financial-grade suitable for transactions
+
+**Mitigation Strategy:**
+- Short access tokens (15 min) limit XSS damage
+- httpOnly cookies for refresh tokens (not accessible to JavaScript)
+- CSP headers to prevent XSS attacks
+- Redis blacklist for immediate token revocation
+- PIN authentication for quick re-login (server-side hash)
+
+**Locked:** YES - Authentication is security-critical
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_auth_strategy_20260128.md
+
+---
+
+### DEC-P08: Real-time Updates - Smart Polling with Adaptive Intervals
+
+**Decision ID:** DEC-P08
+**Date:** 2026-01-28
+**Decision:** Smart Polling with Page Visibility API (NOT WebSocket)
+**Made By:** Business Owner (via escalation esc_realtime_updates_20260128_210000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_realtime_updates_20260128_210000
+
+**Decision Summary:**
+- Approach: HTTP polling with adaptive intervals
+- Active Polling: 15 seconds (when user viewing app)
+- Background Polling: 60 seconds (when app in background)
+- Idle Detection: Stop after 5 minutes of inactivity
+- Implementation: 2 days
+
+**Rationale:**
+Business owner approved smart polling after reviewing honest assessment that WebSocket is over-engineering for single-user ERP. Key factors:
+- **VPS Resources** - 0MB RAM overhead (vs 70-200MB for WebSocket)
+- **Mobile Battery** - 0.5-1%/hour (vs 3-5%/hour with WebSocket, 3x better)
+- **Implementation** - 2 days (vs 5-10 days for WebSocket, saves 8 days)
+- **Network Reliability** - HTTP resilient to connection drops (common in Kenya)
+- **Business Scale** - All use cases tolerate 15-60 second delays
+
+**Honest Assessment:**
+WebSocket is the right technology for multi-user collaborative apps (10+ concurrent staff), but for 90% single-owner usage with hour-long business cycles (laundry jobs, stock depletion), instant real-time provides minimal business value. Smart polling achieves near real-time feel (15-30 seconds) with 5x less complexity and 3x better battery life.
+
+**Use Case Analysis:**
+- **M-Pesa Confirmations:** STK Push already 10-30s delay, 15s polling sufficient
+- **Stock Alerts:** Gradual depletion (hours/days), 60s delay irrelevant
+- **Multi-Device Sync:** 90% single-user, 15-30s sync more than enough
+- **Dashboard:** Periodic review (not live monitoring), 60s acceptable
+- **Laundry Jobs:** Hour-long cycles, 60s delay doesn't matter
+
+**Impact:**
+- **Technical:** Zero additional infrastructure
+- **Timeline:** 2-day implementation (saves 8 days vs WebSocket)
+- **Mobile Battery:** Saves 16-24% battery in 8-hour work day
+- **Future:** Can upgrade to WebSocket post-MVP if business scales
+
+**Polling Strategy:**
+- Page Visibility API detects active/background
+- Adaptive intervals (15s active, 60s background)
+- Stop after 5 minutes inactivity
+- PWA Background Sync for offline resilience
+
+**Locked:** YES - Real-time approach affects architecture
+**Upgrade Path:** Revisit WebSocket post-MVP if business scales to 10+ concurrent staff with collaborative editing needs
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_realtime_updates_20260128.md
+
+---
+
+### DEC-P10: M-Pesa Integration - Custom Django Implementation
+
+**Decision ID:** DEC-P10
+**Date:** 2026-01-28
+**Decision:** Custom Django integration with Safaricom Daraja API
+**Made By:** Business Owner (via escalation esc_mpesa_integration_20260128_220000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_mpesa_integration_20260128_220000
+
+**Decision Summary:**
+- Approach: Custom Django REST Framework integration
+- Package: None (build from scratch using requests library)
+- OAuth: Custom service with Redis token caching (55-min expiry)
+- STK Push: Payment initiation via Lipa Na M-Pesa Online
+- Callback: Async processing with Django-RQ background tasks
+- Implementation: 10 days (Sprint 3-4)
+
+**Rationale:**
+Business owner approved custom M-Pesa integration. Third-party packages eliminated:
+- **django-daraja** - Inactive (last update 2022), no Django 5.0+ support
+- **mpesa-api-python** - Inactive maintenance, missing features
+
+Custom integration provides:
+- **Django 5.0+ Support** - Full compatibility
+- **Zero Payment Loss** - Atomic transactions + status query fallback
+- **Multi-Till Support** - MpesaTill model (unlimited tills)
+- **Production-Grade** - Complete error handling, all M-Pesa error codes
+- **Full Control** - No dependency on unmaintained packages
+
+**Integration Features:**
+- STK Push (Lipa Na M-Pesa Online) for customer-initiated payments
+- C2B (Customer to Business) for till number payments
+- OAuth token generation and auto-refresh (Redis caching)
+- Callback endpoint with signature validation
+- Status query API (fallback if callback fails)
+- Idempotency keys (duplicate prevention)
+- Double-entry ledger integration (debit M-Pesa, credit revenue)
+
+**Zero Payment Loss Guarantee:**
+- Atomic database transactions (payment + ledger all-or-nothing)
+- Status query fallback if callback fails (after 30 seconds)
+- Daily reconciliation catches discrepancies
+- Idempotency keys prevent duplicate payments
+- Residual risk: <1% payment loss
+
+**Security Features:**
+- Credentials encrypted at rest (PostgreSQL pgcrypto)
+- OAuth token auto-refresh (5 min before expiry)
+- Callback IP whitelist (Safaricom IPs only)
+- Timestamp validation (prevent replay attacks)
+- Audit trail (7-year retention for KRA compliance)
+
+**Impact:**
+- **Technical:** Requires Safaricom Daraja developer account
+- **Timeline:** 10-day implementation (Sprint 3-4, Weeks 5-8)
+- **Cost:** $0 (Safaricom Daraja API is free)
+- **Critical:** Mission-critical for payments (highest priority)
+
+**Implementation Timeline:**
+- Week 1 (3 days): OAuth service, STK Push service, database models
+- Week 2 (4 days): Callback handler, ledger integration, status query
+- Week 3 (3 days): Error handling, reconciliation, security, testing
+
+**Testing Strategy:**
+- 10 sandbox scenarios (success, failure, timeout, duplicate, etc.)
+- UAT process with Safaricom (1-2 weeks approval timeline)
+- Go-live certification required before production
+
+**Locked:** YES - M-Pesa integration is mission-critical for payments
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_mpesa_integration_20260128.md
 
 ---
 
@@ -566,12 +833,17 @@ Request: Approval to switch to Vue.js
 | DEC-003 | 2026-01-28 | Multi-Business Architecture | Business Owner | APPROVED | YES |
 | DEC-004 | 2026-01-28 | Mobile-First Design Philosophy | Business Owner | APPROVED | YES |
 | DEC-005 | 2026-01-28 | Double-Entry Financial System | Business Owner | APPROVED | YES |
-| DEC-006 | 2026-01-28 | M-Pesa Integration | Business Owner | APPROVED | YES |
+| DEC-006 | 2026-01-28 | M-Pesa Integration Required | Business Owner | APPROVED | YES |
 | DEC-007 | 2026-01-28 | Budget and Timeline Constraints | Business Owner | APPROVED | YES |
 | DEC-P01 | 2026-01-28 | Frontend Framework - React 18 | Business Owner | APPROVED | YES |
 | DEC-P02 | 2026-01-28 | UI Component Library - Mantine UI | Business Owner | APPROVED | YES |
 | DEC-P03 | 2026-01-28 | Offline Storage - Dexie.js | Business Owner | APPROVED | YES |
+| DEC-P04 | 2026-01-28 | Task Queue System - Django-RQ | Business Owner | APPROVED | YES |
 | DEC-P05 | 2026-01-28 | Chart Library - @mantine/charts | Mantine UI | APPROVED | YES |
+| DEC-P06 | 2026-01-28 | Caching Strategy - Redis + Service Worker | Business Owner | APPROVED | YES |
+| DEC-P07 | 2026-01-28 | API Authentication - JWT + simplejwt | Business Owner | APPROVED | YES |
+| DEC-P08 | 2026-01-28 | Real-time Updates - Smart Polling | Business Owner | APPROVED | YES |
+| DEC-P10 | 2026-01-28 | M-Pesa Integration - Custom Django | Business Owner | APPROVED | YES |
 
 ---
 
