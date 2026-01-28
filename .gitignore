@@ -304,9 +304,8 @@ ledger_backups/
 *.pem
 *.csr
 
+# AI / Claude Code files (project management metadata)
+.ai/
+
 # Docker
 docker-compose.override.yml
-
-# AI / Claude Code files (keep these)
-.ai/
-!README.md
