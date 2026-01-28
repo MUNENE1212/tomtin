@@ -336,13 +336,83 @@ Business owner selected React 18 despite research recommendation of Vue.js 3. Ke
 
 ---
 
-## PENDING DECISIONS (To be Made in Research Stage)
+---
 
-### DEC-P02: Mobile UI Component Library
-**Status:** PENDING RESEARCH - NOW REACT-SPECIFIC
-**Options:** Material-UI, Chakra UI, Ant Design Mobile, React Native Paper
-**Decision Maker:** Research Agent → Human Approval
-**Criteria:** Touch optimization, mobile-first patterns, bundle size impact
+### DEC-P02: Mobile UI Component Library - Mantine UI
+
+**Decision ID:** DEC-P02
+**Date:** 2026-01-28
+**Decision:** Mantine UI selected as React UI component library for mobile + desktop PWA
+**Made By:** Business Owner (via escalation esc_ui_library_20260128_163000)
+**Status:** APPROVED - LOCKED
+**Escalation:** esc_ui_library_20260128_163000
+
+**Decision Summary:**
+- Library: Mantine UI v7+
+- Bundle Size: ~70-200KB (tree-shaken, fully modular)
+- Scope: Single library for both mobile AND desktop (no dual library needed)
+- Integration: React 18 + Vite 5.0+
+- TypeScript: Native support (first-class TypeScript library)
+
+**Rationale:**
+Business owner selected Mantine UI after comparing against research recommendation (Ant Design Mobile) and alternatives (Chakra UI, Material-UI). Key factors:
+- **Single library for mobile + desktop** - No need for dual libraries
+- **Smallest bundle size** (70-200KB vs 200-300KB Chakra vs 300-400KB Material-UI)
+- **English documentation** - No language barrier for team
+- **Built-in ERP components** - Data grid, forms, charts, hooks included
+- **Responsive by design** - Works on 320px mobile AND desktop
+- **Excellent React 18 + Vite support** - Modern build tooling
+
+**Accepted Tradeoffs:**
+- Need to build custom bottom navigation component (2-3 days)
+- No pre-built mobile-specific patterns like antd-mobile's bottom nav
+- Newer library than Material-UI (but mature and stable, active development)
+
+**Impact:**
+- **Technical:** Single UI library for all screen sizes, responsive layouts via AppShell
+- **Timeline:** Minimal impact (0-7 days for custom components vs 8-13 days for Ant Design Mobile)
+- **Bundle:** 70-200KB + React 165-200KB = 235-400KB total (well under budget)
+- **Learning:** TypeScript-first, English docs - easier for Django developers
+
+**Mitigation Strategy:**
+1. Use Mantine's `AppShell` component for responsive layouts
+2. Use `Drawer` for mobile hamburger menu navigation
+3. Build custom bottom nav using Mantine components (2-3 days)
+4. Leverage `useMediaQuery` hook for responsive behavior detection
+5. Use built-in `@mantine/form` for form validation
+6. Use built-in `@mantine/charts` for data visualization
+7. Use built-in data tables for ERP data display
+
+**Stack Integration:**
+```
+React 18 (DEC-P01)
+├── Mantine UI v7+ (@mantine/core)
+├── @mantine/hooks (react hooks library)
+├── @mantine/form (form validation)
+├── @mantine/charts (charts, powered by Recharts)
+└── Vite 5.0+ (build tool with tree-shaking)
+```
+
+**Alternatives Considered:**
+- **Ant Design Mobile (Research Recommendation):** Purpose-built for mobile, but required dual library for desktop (+8-13 days) - REJECTED
+- **Chakra UI:** Good single library option, but larger bundle (200-300KB) and less ERP components - REJECTED
+- **Material-UI:** Most mature, but too large (400-500KB) and desktop-first - REJECTED
+
+**Locked:** YES - UI library is foundational; changing would require rebuilding all components
+
+**Related Files:**
+- /media/munen/muneneENT/ementech-portfolio/tomtin/docs/research/research_mobile_ui_library_20260128.md
+- /media/munen/muneneENT/ementech-portfolio/tomtin/.ai/escalations/resolved/esc_ui_library_20260128_163000.json
+
+**Next Steps:**
+1. Document mobile component architecture (bottom nav build plan)
+2. Define responsive layout strategy with AppShell
+3. Set up Mantine + Vite development environment
+4. Create proof-of-concept mobile + desktop layouts
+
+---
+
+## PENDING DECISIONS (To be Made in Research Stage)
 
 ### DEC-P03: Offline Data Storage Strategy
 **Status:** PENDING RESEARCH
@@ -357,10 +427,10 @@ Business owner selected React 18 despite research recommendation of Vue.js 3. Ke
 **Criteria:** Integration complexity, performance, monitoring
 
 ### DEC-P05: Chart/Visualization Library
-**Status:** PENDING RESEARCH
-**Options:** Chart.js, Recharts, Victory, ApexCharts
-**Decision Maker:** Research Agent → Human Approval
-**Criteria:** Mobile rendering, touch interaction, bundle size, offline support
+**Status:** ALREADY DECIDED (included with Mantine UI - DEC-P02)
+**Selection:** @mantine/charts (powered by Recharts)
+**Decision Maker:** Included with Mantine UI selection
+**Notes:** Mantine Charts provides mobile-optimized charts powered by Recharts. No additional library needed.
 
 ---
 
@@ -417,6 +487,7 @@ Request: Approval to switch to Vue.js
 | DEC-006 | 2026-01-28 | M-Pesa Integration | Business Owner | APPROVED | YES |
 | DEC-007 | 2026-01-28 | Budget and Timeline Constraints | Business Owner | APPROVED | YES |
 | DEC-P01 | 2026-01-28 | Frontend Framework - React 18 | Business Owner | APPROVED | YES |
+| DEC-P02 | 2026-01-28 | UI Component Library - Mantine UI | Business Owner | APPROVED | YES |
 
 ---
 
