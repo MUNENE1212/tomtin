@@ -1,0 +1,57 @@
+{
+  "project": {
+    "name": "Unified Business Management System",
+    "description": "Multi-business ERP system integrating POS, Inventory, Accounting, and BI for 3 businesses (Water Packaging, Laundry, Retail/LPG)",
+    "created": "2026-01-28T08:40:00Z",
+    "version": "0.1.0",
+    "phase": "initialization",
+    "budget": {
+      "total": "$15,000 USD",
+      "operational": "$200/month",
+      "currency": "USD"
+    },
+    "timeline": {
+      "mvp_target": "3 months",
+      "target_completion": "2026-04-28"
+    }
+  },
+  "workflow": {
+    "current_stage": "initialization",
+    "current_step": 1,
+    "stages_completed": [],
+    "stages_remaining": ["research", "refactor", "implementation", "validation", "deployment"],
+    "paused": false,
+    "pause_reason": null
+  },
+  "agents": {
+    "next_agent": "orchestrator",
+    "last_active": null,
+    "agents_deployed": []
+  },
+  "escalations": {
+    "pending_count": 1,
+    "pending_ids": ["esc_mission_definition_20260128_084000"]
+  },
+  "checkpoint": {
+    "current": null,
+    "git_sha": null,
+    "created": null,
+    "verified": false
+  },
+  "technology_stack": {
+    "backend": "Django 5.0+",
+    "database": "PostgreSQL",
+    "frontend": "PWA (mobile-first)",
+    "status": "proposed"
+  },
+  "business_context": {
+    "owner_primary_device": "mobile_phone",
+    "businesses": [
+      "Water Packaging",
+      "Laundry",
+      "Retail/LPG"
+    ],
+    "primary_user": "Business Owner",
+    "deployment_target": "Mobile PWA"
+  }
+}

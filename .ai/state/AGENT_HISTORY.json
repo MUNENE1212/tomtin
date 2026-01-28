@@ -1,0 +1,14 @@
+{
+  "runs": [],
+  "current_context": {
+    "last_run": null,
+    "next_agent_should_be": "orchestrator",
+    "workflow_stage": "initialization",
+    "total_runs": 0
+  },
+  "project_metadata": {
+    "project_root": "/media/munen/muneneENT/ementech-portfolio/tomtin",
+    "initialized_at": "2026-01-28T08:40:00Z",
+    "last_updated": "2026-01-28T08:40:00Z"
+  }
+}
